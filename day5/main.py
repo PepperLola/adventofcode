@@ -3,69 +3,59 @@ import time
 import re
 
 # shared variables here
+def build_crates(line, crates):
+    last_idx = 0
+    while last_idx != -1:
+        if not "[" in line[last_idx + 1:]:
+            break
+        last_idx = line.index("[", last_idx)
+        i = last_idx // 4
+        while len(crates) < i + 1:
+            crates.append([])
+        crates[i].append(line[last_idx + 1])
+        last_idx += 1
+    return crates
+
+def top_crates(crates):
+    res = ""
+    for stack in crates:
+        res += stack[0]
+    return res
 
 # part 1, takes in lines of file
 def p1(lines):
     crates = []
     for line in lines:
         if '[' in line:
-            last_idx = 0
-            while last_idx != -1:
-                if not "[" in line[last_idx + 1:]:
-                    break
-                last_idx = line.index("[", last_idx)
-                i = last_idx // 4
-                while len(crates) < i + 1:
-                    crates.append([])
-                crates[i].append(line[last_idx + 1])
-                last_idx += 1
-        elif line != "\n" and "move" in line:
+            crates = build_crates(line, crates)
+        elif "move" in line:
             moves = re.findall("[0-9]+", line)
             amt = int(moves[0])
             chosen_crate = int(moves[1]) - 1
             dest_crate = int(moves[2]) - 1
-            temp = []
-            # print(line, crates[chosen_crate], crates[dest_crate], amt)
+
             for i in range(amt):
                 crates[dest_crate] = [crates[chosen_crate][0]] + crates[dest_crate]
                 crates[chosen_crate] = crates[chosen_crate][1:]
                 
-    res = ""
-    for stack in crates:
-        res += stack[0]
-    return res
+    return top_crates(crates)
 
 # part 2, takes in lines of file
 def p2(lines):
     crates = []
     for line in lines:
         if '[' in line:
-            last_idx = 0
-            while last_idx != -1:
-                if not "[" in line[last_idx + 1:]:
-                    break
-                last_idx = line.index("[", last_idx)
-                i = last_idx // 4
-                while len(crates) < i + 1:
-                    crates.append([])
-                crates[i].append(line[last_idx + 1])
-                last_idx += 1
-        elif line != "\n" and "move" in line:
+            crates = build_crates(line, crates)
+        elif "move" in line:
             moves = re.findall("[0-9]+", line)
             amt = int(moves[0])
             chosen_crate = int(moves[1]) - 1
             dest_crate = int(moves[2]) - 1
-            temp = []
-            # print(line, crates[chosen_crate], crates[dest_crate], amt)
-            for i in range(amt):
-                temp.append(crates[chosen_crate][0])
-                crates[chosen_crate] = crates[chosen_crate][1:]
-            crates[dest_crate] = temp + crates[dest_crate]
+
+            crates[dest_crate] = crates[chosen_crate][:amt] + crates[dest_crate]
+            crates[chosen_crate] = crates[chosen_crate][amt:]
                 
-    res = ""
-    for stack in crates:
-        res += stack[0]
-    return res
+    return top_crates(crates)
 
 filename = "input.txt"
 
