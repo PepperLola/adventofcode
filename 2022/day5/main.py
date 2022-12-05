@@ -5,15 +5,13 @@ import re
 # shared variables here
 def build_crates(line, crates):
     last_idx = 0
-    while last_idx != -1:
-        if not "[" in line[last_idx + 1:]:
-            break
-        last_idx = line.index("[", last_idx)
-        i = last_idx // 4
-        while len(crates) < i + 1:
+    for i in range(0, len(line), 4):
+        if line[i] != "[":
+            continue
+        idx = i // 4
+        while len(crates) < idx + 1:
             crates.append([])
-        crates[i].append(line[last_idx + 1])
-        last_idx += 1
+        crates[idx].append(line[i + 1])
     return crates
 
 def top_crates(crates):
@@ -25,7 +23,11 @@ def top_crates(crates):
 # part 1, takes in lines of file
 def p1(lines):
     crates = []
-    for line in lines:
+    num_lines = len(str(lines))
+    max_num_line_len = len(str(num_lines))
+    for i in range(len(lines)):
+        print(f"Processing line {str(i).zfill(max_num_line_len)}/{num_lines}", end="\r")
+        line = lines[i]
         if '[' in line:
             crates = build_crates(line, crates)
         elif "move" in line:
