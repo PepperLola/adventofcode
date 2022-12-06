@@ -11,8 +11,7 @@ def p1(lines):
         four = line[i:i+4]
         unique = True
         for c in four:
-            arr = [k for k in four if k == c]
-            if len(arr) > 1:
+            if len(set(four)) < 4:
                 unique = False
 
         if unique:
@@ -27,8 +26,7 @@ def p2(lines):
         four = line[i:i+14]
         unique = True
         for c in four:
-            arr = [k for k in four if k == c]
-            if len(arr) > 1:
+            if len(set(four)) < 14:
                 unique = False
 
         if unique:
