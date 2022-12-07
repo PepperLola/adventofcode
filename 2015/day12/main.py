@@ -1,16 +1,37 @@
 import sys
 import time
 import re
+import json
 
 # shared variables here
 
 # part 1, takes in lines of file
 def p1(lines):
-    return 0
+    file = "".join(lines)
+    match = re.findall("-?\d+", file)
+    return sum([int(i) for i in match])
+
+def sum_object(o):
+    temp_sum = 0
+    if type(o) is str:
+        return 0
+    elif type(o) is int:
+        return o
+    elif type(o) is list:
+        for i in o:
+            temp_sum += sum_object(i)
+    elif type(o) is dict:
+        if "red" in o.values():
+            return 0
+        for key in o.keys():
+            temp_sum += sum_object(o[key])
+    return temp_sum
+
 
 # part 2, takes in lines of file
 def p2(lines):
-    return 0
+    y = json.loads(lines[0])
+    return sum_object(y)
 
 filename = "input.txt"
 
