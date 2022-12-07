@@ -1,6 +1,7 @@
 import sys
 import time
 import re
+import itertools
 
 # shared variables here
 
