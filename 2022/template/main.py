@@ -2,6 +2,7 @@ import sys
 import time
 import re
 import itertools
+import numpy as np
 
 # shared variables here
 
