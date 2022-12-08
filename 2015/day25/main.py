@@ -5,10 +5,28 @@ import itertools
 import numpy as np
 
 # shared variables here
+row = 2978
+col = 3083
+
+def get_index(r, c):
+    return int(((r+c+1)*(r+c+2))/2-c)
+
+def get_value(idx):
+    # return 20151125*(252533**idx) % 33554393
+    val = 20151125
+    for i in range(idx-1):
+        val *= 252533
+        val %= 33554393
+    return val
 
 # part 1, takes in lines of file
 def p1(lines):
-    return 0
+    for r in range(6):
+        for c in range(6):
+            print(get_value(get_index(r, c)))
+    idx = get_index(row, col)
+    # print(idx)
+    return get_value(idx)
 
 # part 2, takes in lines of file
 def p2(lines):

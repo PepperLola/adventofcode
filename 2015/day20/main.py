@@ -3,15 +3,40 @@ import time
 import re
 import itertools
 import numpy as np
+import math
 
 # shared variables here
+def divisors(num):
+    if num == 1:
+        return [1]
+    res = [1, num]
+    max_to_check = int(math.sqrt(num)) + 1
+    for i in range(2, max_to_check):
+        if num % i == 0:
+            res += [i, num / i]
+    return res
+
 
 # part 1, takes in lines of file
 def p1(lines):
+    line = lines[0].strip()
+    inp = int(int(line) / 10)
+    i = 200000
+    while True:
+        if sum(divisors(i)) >= inp:
+            return i
+        i += 1
     return 0
 
 # part 2, takes in lines of file
 def p2(lines):
+    line = lines[0].strip()
+    inp = int(int(line) / 11)
+    i = 200000
+    while True:
+        if sum([k for k in divisors(i) if i / k <= 50]) >= inp:
+            return i
+        i += 1
     return 0
 
 filename = "input.txt"

@@ -1,18 +1,33 @@
 import sys
 import time
 import re
-import itertools
 import numpy as np
+import itertools
 
 # shared variables here
+sizes = []
 
 # part 1, takes in lines of file
 def p1(lines):
-    return 0
+    sizes = [int(line.strip()) for line in lines]
+    combs = []
+    for i in range(2, len(sizes)):
+        curr_combs = itertools.combinations(sizes, i)
+        combs += curr_combs
+    combs = [comb for comb in combs if sum(comb) == 150]
+    return len(combs)
 
 # part 2, takes in lines of file
 def p2(lines):
-    return 0
+    sizes = [int(line.strip()) for line in lines]
+    combs = []
+    for i in range(2, len(sizes)):
+        curr_combs = itertools.combinations(sizes, i)
+        combs += curr_combs
+    combs = [comb for comb in combs if sum(comb) == 150]
+    lens = [len(comb) for comb in combs]
+    min_len = min(lens)
+    return len([l for l in lens if l == min_len])
 
 filename = "input.txt"
 

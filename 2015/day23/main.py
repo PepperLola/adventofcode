@@ -5,14 +5,43 @@ import itertools
 import numpy as np
 
 # shared variables here
+def process_registers(registers, lines):
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        # print(i, line, registers)
+        # input()
+        inst = line.replace(",", "").split(" ")
+
+        if inst[0] == "hlf":
+            registers[inst[1]] /= 2
+        elif inst[0] == "tpl":
+            registers[inst[1]] *= 3
+        elif inst[0] == "inc":
+            registers[inst[1]] += 1
+        elif inst[0] == "jmp":
+            i += int(inst[1]) - 1
+        elif inst[0] == "jie":
+            offset = int(inst[2])
+            if registers[inst[1]] % 2 == 0:
+                    i += offset - 1
+        elif inst[0] == "jio":
+            offset = int(inst[2])
+            if registers[inst[1]] == 1:
+                i += offset - 1
+        i += 1
 
 # part 1, takes in lines of file
 def p1(lines):
-    return 0
+    registers = {"a": 0, "b": 0}
+    process_registers(registers, lines)
+    return registers["b"]
 
 # part 2, takes in lines of file
 def p2(lines):
-    return 0
+    registers = {"a": 1, "b": 0}
+    process_registers(registers, lines)
+    return registers["b"]
 
 filename = "input.txt"
 
