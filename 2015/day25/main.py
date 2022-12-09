@@ -9,7 +9,7 @@ row = 2978
 col = 3083
 
 def get_index(r, c):
-    return int(((r+c+1)*(r+c+2))/2-c)
+    return int(((c+r+1)*(c+r+2))/2-r)
 
 def get_value(idx):
     # return 20151125*(252533**idx) % 33554393
@@ -21,10 +21,11 @@ def get_value(idx):
 
 # part 1, takes in lines of file
 def p1(lines):
-    for r in range(6):
-        for c in range(6):
-            print(get_value(get_index(r, c)))
-    idx = get_index(row, col)
+    # for r in range(6):
+        # for c in range(6):
+            # print(get_value(get_index(r, c)), end=" | ")
+        # print("\n")
+    idx = get_index(row - 1, col - 1)
     # print(idx)
     return get_value(idx)
 
