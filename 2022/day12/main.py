@@ -2,26 +2,25 @@ import sys
 import time
 import re
 import itertools
+import util
+import copy
 from collections import deque
 import numpy as np
 
 # shared variables here
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-def parse_elevations(lines):
-    e = np.zeros((len(lines), len(lines[0].strip())))
+def parse_elevations(grid):
+    e = copy.deepcopy(grid)
     S = (0, 0)
     E = (0, 0)
-    for y in range(len(lines)):
-        for x in range(len(lines[0].strip())):
-            c = lines[y].strip()[x]
+    for y in range(len(grid)):
+        for x in range(len(grid[y])):
+            c = lines[y][x]
             if c == "S":
                 e[y][x] = 0
                 S = (x, y)
             elif c == "E":
                 e[y][x] = 25
                 E = (x, y)
-            else:
-                e[y][x] = alphabet.index(lines[y][x])
     return (e, S, E)
 
 # part 1, takes in lines of file
@@ -100,7 +99,7 @@ def format_time(time_ns):
             return "%s%s " % (times[i], names[i])
 
 with open(filename, "r") as f:
-    lines = f.readlines()
+    lines = util.alphabet_scale_grid(f)
     t = time.perf_counter_ns()
     a = p1(lines)
     dur = time.perf_counter_ns() - t

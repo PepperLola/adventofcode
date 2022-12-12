@@ -2,6 +2,9 @@ import sys
 import time
 import re
 import itertools
+from collections import defaultdict, deque
+import math
+import copy
 import numpy as np
 
 # shared variables here
@@ -38,7 +41,7 @@ def format_time(time_ns):
             return "%s%s " % (times[i], names[i])
 
 with open(filename, "r") as f:
-    lines = f.readlines()
+    lines = f.readfile().splitlines()
     t = time.perf_counter_ns()
     a = p1(lines)
     dur = time.perf_counter_ns() - t
