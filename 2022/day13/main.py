@@ -51,6 +51,8 @@ def p2(lines):
         if len(line) > 0:
             l.append(eval(line))
 
+    l = [[[2]], [[6]]] + l
+
     for i in range(len(l) - 1):
         for j in range(len(l) - i - 1):
             if not is_right_order(l[j], l[j+1]):
