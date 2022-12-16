@@ -41,7 +41,7 @@ def format_time(time_ns):
             return "%s%s " % (times[i], names[i])
 
 with open(filename, "r") as f:
-    lines = f.readfile().splitlines()
+    lines = f.read().splitlines()
     t = time.perf_counter_ns()
     a = p1(lines)
     dur = time.perf_counter_ns() - t
