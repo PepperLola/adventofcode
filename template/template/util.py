@@ -1,4 +1,6 @@
 import numpy as np
+import math
+import re
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -40,6 +42,46 @@ def alphabet_scale_grid(lines, separator = ""):
             if grid[y][x] in alphabet:
                 grid[y][x] = alphabet.index(grid[y][x])
     return grid
+
+def parse_str_6(s, fg = "#", bg = " "):
+    letters = {
+        " ## \n#  #\n####\n#  #\n#  #\n#  #\n": "A",
+        "### \n#  #\n### \n#  #\n#  #\n### \n": "B",
+        " ## \n#  #\n#   \n#   \n#  #\n ## \n": "C",
+        "### \n#  #\n#  #\n#  #\n#  #\n### \n": "D",
+        "####\n#   \n### \n#   \n#   \n####\n": "E",
+        "####\n#   \n### \n#   \n#   \n#   \n": "F",
+        " ## \n#  #\n#   \n# ##\n#  #\n ###\n": "G",
+        "#  #\n#  #\n####\n#  #\n#  #\n#  #\n": "H",
+        " ###\n  # \n  # \n  # \n  # \n ###\n": "I",
+        "  ##\n   #\n   #\n   #\n#  #\n ## \n": "J",
+        "#  #\n# # \n##  \n# # \n# # \n#  #\n": "K",
+        "#   \n#   \n#   \n#   \n#   \n####\n": "L",
+        
+
+        " ## \n#  #\n#  #\n#  #\n#  #\n ## \n": "O",
+        "### \n#  #\n#  #\n### \n#   \n#   \n": "P",
+        "### \n#  #\n#  #\n### \n# # \n#  #\n": "R",
+        " ###\n#   \n#   \n ## \n   #\n### \n": "S",
+        " ###\n  # \n  # \n  # \n  # \n  # \n": "T",
+        "#  #\n#  #\n#  #\n#  #\n#  #\n ## \n": "U",
+
+
+
+        "#   \n#   \n # #\n  # \n  # \n  # \n": "Y",
+        "####\n   #\n  # \n #  \n#   \n####\n": "Z",
+    }
+    ret = ""
+    arr = re.sub(r"\x1b\[\d*;?\d+m\n?", "", s).replace(fg, "#").replace(bg, " ").split("\n")
+    rows, cols = len(arr), len(arr[0])
+    chars = math.ceil(cols / 5)
+    for i in range(chars):
+        st = ""
+        for j in range(6):
+            st += arr[j][i*5:i*5+4] + "\n"
+        if st in letters.keys():
+            ret += letters[st]
+    return ret
 
 def format_time(time_ns):
     names = ["hr", "m", "s", "ms", "µs", "ns"]

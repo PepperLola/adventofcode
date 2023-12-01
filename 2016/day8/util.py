@@ -1,6 +1,5 @@
 import numpy as np
 import math
-import re
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -43,7 +42,7 @@ def alphabet_scale_grid(lines, separator = ""):
                 grid[y][x] = alphabet.index(grid[y][x])
     return grid
 
-def parse_str_6(s, fg = "#", bg = " "):
+def parse_str_6(s):
     letters = {
         " ## \n#  #\n####\n#  #\n#  #\n#  #\n": "A",
         "### \n#  #\n### \n#  #\n#  #\n### \n": "B",
@@ -72,7 +71,7 @@ def parse_str_6(s, fg = "#", bg = " "):
         "####\n   #\n  # \n #  \n#   \n####\n": "Z",
     }
     ret = ""
-    arr = re.sub(r"\x1b\[\d*;?\d+m\n?", "", s).replace(fg, "#").replace(bg, " ").split("\n")
+    arr = s.split("\n")
     rows, cols = len(arr), len(arr[0])
     chars = math.ceil(cols / 5)
     for i in range(chars):
