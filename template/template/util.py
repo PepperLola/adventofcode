@@ -28,3 +28,21 @@ def alphabet_scale_grid(file, separator=""):
             if grid[y][x] in alphabet:
                 grid[y][x] = alphabet.index(grid[y][x])
     return grid
+
+def format_time(time_ns):
+    names = ["hr", "m", "s", "ms", "µs", "ns"]
+    names.reverse()
+    times = [
+        time_ns % 1000,
+        (time_ns // 1000) % 1000,
+        (time_ns // (1000 * 10**3)) % 1000,
+        (time_ns // (1000 * 10**6)) % 60,
+        (time_ns // (1000 * 10**6) // 60) % 60,
+        (time_ns // (1000 * 10**6) // 60 // 60) % 60
+    ]
+    for i in range(0, len(times)):
+        if i < len(times) - 1:
+            if times[i + 1] == 0:
+                return "%s%s " % (times[i], names[i])
+        else:
+            return "%s%s " % (times[i], names[i])
