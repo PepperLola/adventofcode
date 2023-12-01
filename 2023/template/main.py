@@ -6,6 +6,7 @@ from collections import defaultdict, deque
 import math
 import copy
 import numpy as np
+from util import format_time
 
 # shared variables here
 
@@ -21,24 +22,6 @@ filename = "input.txt"
 
 if "test" in sys.argv:
     filename = "test.txt"
-
-def format_time(time_ns):
-    names = ["hr", "m", "s", "ms", "µs", "ns"]
-    names.reverse()
-    times = [
-        time_ns % 1000,
-        (time_ns // 1000) % 1000,
-        (time_ns // (1000 * 10**3)) % 1000,
-        (time_ns // (1000 * 10**6)) % 60,
-        (time_ns // (1000 * 10**6) // 60) % 60,
-        (time_ns // (1000 * 10**6) // 60 // 60) % 60
-    ]
-    for i in range(0, len(times)):
-        if i < len(times) - 1:
-            if times[i + 1] == 0:
-                return "%s%s " % (times[i], names[i])
-        else:
-            return "%s%s " % (times[i], names[i])
 
 with open(filename, "r") as f:
     lines = f.read().splitlines()

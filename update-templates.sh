@@ -2,7 +2,6 @@ for dir in */; do
     dir="${dir%/}"
     echo "Copying template to $dir..."
     if [ "$dir" != "template" ]; then
-        echo "$dir is not template"
         if [ -d "$dir/template" ]; then
             rm -r "$dir/template"
         fi
