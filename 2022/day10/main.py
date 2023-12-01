@@ -3,6 +3,7 @@ import time
 import re
 import itertools
 import numpy as np
+from util import parse_str_6
 
 # shared variables here
 def get_state_at_cycle(lines, target):
@@ -84,8 +85,7 @@ def p2(lines):
             if X - 1 <= (cycle) % 240 <= X + 1:
                 crt = crt[:cycle] + "X" + crt[cycle + 1:]
 
-    print(format_crt(crt, -10000))
-    return 0
+    return parse_str_6(format_crt(crt, -10000), fg="██", bg="  ")
 
 filename = "input.txt"
 

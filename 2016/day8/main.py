@@ -2,6 +2,7 @@ import sys
 import time
 import re
 import itertools
+from util import parse_str_6
 import numpy as np
 
 # shared variables here
@@ -37,12 +38,12 @@ def p1(lines):
 
 # part 2, takes in lines of file
 def p2(lines):
-    s = "\n"
+    s = ""
     for y in range(len(screen)):
         for x in range(len(screen[y])):
             s += "#" if screen[y][x] == 1 else " "
         s += "\n"
-    return s
+    return parse_str_6(s)
 
 filename = "input.txt"
 
@@ -50,8 +51,7 @@ if "test" in sys.argv:
     filename = "test.txt"
 
 def format_time(time_ns):
-    names = ["hr", "m", "s", "ms", "µs", "ns"]
-    names.reverse()
+    names = ["ns", "µs", "ms", "s", "m", "hr"]
     times = [
         time_ns % 1000,
         (time_ns // 1000) % 1000,
