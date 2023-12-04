@@ -8,18 +8,14 @@ import numpy as np
 
 # part 1, takes in lines of file
 def p1(lines):
+    size = 0
     for file in lines:
         file = file.strip()
         in_marker = False
-        size = 0
-        counter = 0
         times = 1
-        counter_size = 0
         i = 0
         while i < len(file):
             c = file[i]
-            # print(c, "COUNTER_SIZE", counter_size, "COUNTER", counter, "TIMES", times)
-            # input()
             if c == "(" and not in_marker:
                 closing = file.index(")", i)
                 marker = file[i+1:closing]
@@ -34,22 +30,45 @@ def p1(lines):
                 
     return size
 
-def find_len(s):
-    size = 0
-    for i in range(len(s)):
-        if s == "(":
-            closing = s.index(")", i)
-            marker = s[i+1:closing]
-            s = marker.split("x")
-            amt = int(s[0])
-            times = int(s[1])
+def decompress(s, depth = 0):
+    matched = False
+    while True:
+        match = re.search(r"\((\d+)x(\d+)\)", s)
+        if not match:
+            break
+        matched = True
+        start, end = match.span()
+        num_chars = int(match.group(1))
+        span = s[end:end+num_chars]
+        times = int(match.group(2))
+        s = s[:start] + span*times + s[end+num_chars:]
+    if not matched:
+        return s
+    return decompress(s, depth+1)
 
-            size += find_len(s[closing+1:]) * times
-    return 1
+def find_length(s, n=1):
+    matched = False
+    length = 0
+    while True:
+        match = re.search(r"\((\d+)x(\d+)\)", s)
+        if not match:
+            break
+        start, end = match.span()
+        length += len(s[:start])
+        num_chars = int(match.group(1))
+        times = int(match.group(2))
+        matched = True
+        sub = s[end:end+num_chars]
+        length += find_length(sub, times)
+        s = s[end+num_chars:]
+    if not matched:
+        return len(s)*n
+    else:
+        return length*n
 
 # part 2, takes in lines of file
 def p2(lines):
-    return find_len(lines[0].strip())
+    return find_length(lines[0])
 
 filename = "input.txt"
 
