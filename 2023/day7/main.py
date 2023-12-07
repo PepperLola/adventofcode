@@ -24,14 +24,10 @@ class Hand:
         if not self.part_2 or not "J" in self.cards:
             return Hand.hand_type(self)
 
-        max_type = 0
-        for new_card in cards_types:
-            if new_card == "J":
-                continue
-            new_type = Hand.hand_type(Hand(self.cards.replace("J", new_card), self.bid))
-            if new_type > max_type:
-                max_type = new_type
-        return max_type
+        card_freq = {i:self.cards.count(i) for i in cards_types}
+        most_common = list(filter(lambda x: x[0] != "J", sorted(card_freq.items(), key=lambda x: x[1])))[-1]
+        hand = Hand(self.cards.replace("J", most_common[0]), self.bid)
+        return Hand.hand_type(hand)
 
     @staticmethod
     def hand_type(hand):
@@ -62,6 +58,9 @@ class Hand:
                     continue
                 return sci < oci
         return self_type < other_type
+
+    def __str__(self):
+        return f"Hand[cards={self.cards}, bid={self.bid}]"
 
 #part 1, takes in lines of file
 def p1(file, content, lines):
