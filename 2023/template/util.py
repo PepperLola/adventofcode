@@ -3,6 +3,7 @@ import math
 import re
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def letter_grid_file(file, separator = ""):
     lines = file.read().splitlines()
@@ -12,36 +13,20 @@ def number_grid_file(file, separator = ""):
     lines = file.read().splitlines()
     return number_grid(lines, separator)
 
-def alphabet_scale_grid_file(file, separator=""):
+def alphabet_scale_grid_file(file, caps=False, separator=""):
     global alphabet
     lines = file.read().splitlines()
-    return alphabet_scale_grid(lines, separator)
+    return alphabet_scale_grid(lines, caps, separator)
 
 def letter_grid(lines, separator = ""):
-    first_line = lines[0].replace(separator, "")
-    grid = [['' for x in range(len(first_line))] for y in range(len(lines))]
-    for y in range(len(lines)):
-        line = list(lines[y]) if separator == "" else lines[y].split(separator)
-        for x in range(len(line)):
-            grid[y][x] = line[x]
-    return grid
+    return [list(l) if separator == "" else l.split(separator) for l in lines]
 
 def number_grid(lines, separator = ""):
-    first_line = lines[0].replace(separator, "")
-    grid = np.zeros((len(lines), len(first_line)))
-    for y in range(len(lines)):
-        line = list(lines[y]) if separator == "" else lines[y].split(separator)
-        for x in range(len(line)):
-            grid[y][x] = int(line[x])
-    return grid
+    return [list(map(int, list(l))) if separator == "" else list(map(int, l.split(separator))) for l in lines]
 
-def alphabet_scale_grid(lines, separator = ""):
-    grid = letter_grid(lines, separator)
-    for y in range(len(grid)):
-        for x in range(len(grid[y])):
-            if grid[y][x] in alphabet:
-                grid[y][x] = alphabet.index(grid[y][x])
-    return grid
+def alphabet_scale_grid(lines, caps=False, separator = ""):
+    return map(lambda l:
+               map(lambda c: ALPHABET.index(c) if caps else alphabet.index(c), l), letter_grid(lines, separator))
 
 def parse_str_6(s, fg = "#", bg = " "):
     letters = {
