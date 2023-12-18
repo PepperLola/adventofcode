@@ -12,29 +12,7 @@ from heapq import heappush, heappop
 
 # shared variables here
 dirs = [(0, -1), (1, 0), (0, 1), (-1, 0)]
-def path_weight(g, path):
-    w = 0
-    for p in path:
-        w += g[p[1]][p[0]]
-    return w
-
-def next(g, pos, visited, dir_hist):
-    p = []
-    print(p)
-    if pos == (len(g[0])-1, len(g)-1):
-        return [pos]
-    for dir in range(4):
-        if len(dir_hist) > 0 and max(dir, dir_hist[0]) - min(dir, dir_hist[0]) == 2:
-            continue
-        if len(dir_hist) >= 3 and dir_hist[0] == dir_hist[1] == dir_hist[2] == dir:
-            continue
-        dx, dy = dirs[dir]
-        n = (pos[0]+dx, pos[1]+dy)
-        if 0 <= n[0] < len(g[0]) and 0 <= n[1] < len(g) and not n in visited:
-            new_val = [*pos, next(g, n, [n, *visited], [dir, *dir_hist])]
-            p.append(new_val)
-    print(p)
-    return sorted(map(lambda x: (x, path_weight(g, x)), p), key=lambda x: x[1])[0]
+grid = None
 
 def neighbors(g, pos, ultra):
     x, y, in_dir, dir = pos
@@ -71,14 +49,14 @@ def dijkstra(g, ultra=False):
 
 # part 1, takes in lines of file
 def p1(file, content, lines):
-    g = [list(map(int, list(l))) for l in lines]
-    return dijkstra(g)
+    global grid
+    grid = [list(map(int, list(l))) for l in lines]
+    return dijkstra(grid)
 
 
 # part 2, takes in lines of file
 def p2(file, content, lines):
-    g = [list(map(int, list(l))) for l in lines]
-    return dijkstra(g, True)
+    return dijkstra(grid, True)
 
 filename = "input.txt"
 
