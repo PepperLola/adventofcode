@@ -6,6 +6,7 @@ from collections import defaultdict, deque
 import math
 import copy
 import numpy as np
+import networkx as nx
 from util import format_time, number_grid
 
 # shared variables here
