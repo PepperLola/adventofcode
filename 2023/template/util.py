@@ -3,7 +3,6 @@ import math
 import re
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def letter_grid_file(file, separator = ""):
     lines = file.read().splitlines()
@@ -13,20 +12,80 @@ def number_grid_file(file, separator = ""):
     lines = file.read().splitlines()
     return number_grid(lines, separator)
 
-def alphabet_scale_grid_file(file, caps=False, separator=""):
+def alphabet_scale_grid_file(file, separator=""):
     global alphabet
     lines = file.read().splitlines()
-    return alphabet_scale_grid(lines, caps, separator)
+    return alphabet_scale_grid(lines, separator)
 
 def letter_grid(lines, separator = ""):
-    return [list(l) if separator == "" else l.split(separator) for l in lines]
+    first_line = lines[0].replace(separator, "")
+    grid = [['' for x in range(len(first_line))] for y in range(len(lines))]
+    for y in range(len(lines)):
+        line = list(lines[y]) if separator == "" else lines[y].split(separator)
+        for x in range(len(line)):
+            grid[y][x] = line[x]
+    return grid
 
 def number_grid(lines, separator = ""):
-    return [list(map(int, list(l))) if separator == "" else list(map(int, l.split(separator))) for l in lines]
+    first_line = lines[0].replace(separator, "")
+    grid = np.zeros((len(lines), len(first_line)))
+    for y in range(len(lines)):
+        line = list(lines[y]) if separator == "" else lines[y].split(separator)
+        for x in range(len(line)):
+            grid[y][x] = int(line[x])
+    return grid
 
-def alphabet_scale_grid(lines, caps=False, separator = ""):
-    return map(lambda l:
-               map(lambda c: ALPHABET.index(c) if caps else alphabet.index(c), l), letter_grid(lines, separator))
+def alphabet_scale_grid(lines, separator = ""):
+    grid = letter_grid(lines, separator)
+    for y in range(len(grid)):
+        for x in range(len(grid[y])):
+            if grid[y][x] in alphabet:
+                grid[y][x] = alphabet.index(grid[y][x])
+    return grid
+
+def find_grid(grid, arr):
+    H = len(grid)
+    W = len(grid[0])
+    shape = np.shape(arr)
+    if len(shape) == 1:
+        arr = [arr]
+        shape = np.shape(arr)
+    IH, IW = shape
+    for row in range(H):
+        for col in range(W):
+            for off_row in range(IH):
+                good = True
+                for off_col in range(IW):
+                    if arr[off_row][off_col] != None and grid[row + off_row][col + off_col] != arr[off_row][off_col]:
+                        good = False
+                        break
+                if not good:
+                    break
+                return (col, row)
+    return None
+
+def find_all_grid(grid, arr):
+    H = len(grid)
+    W = len(grid[0])
+    shape = np.shape(arr)
+    if len(shape) == 1:
+        arr = [arr]
+        shape = np.shape(arr)
+    IH, IW = shape
+    ret = []
+    for row in range(H - IH + 1):
+        for col in range(W - IW + 1):
+            good = True
+            for off_row in range(IH):
+                for off_col in range(IW):
+                    if arr[off_row][off_col] != None and grid[row + off_row][col + off_col] != arr[off_row][off_col]:
+                        good = False
+                        break
+                if not good:
+                    break
+            if good:
+                ret.append((col, row))
+    return ret
 
 def parse_str_6(s, fg = "#", bg = " "):
     letters = {
