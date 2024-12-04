@@ -1,3 +1,4 @@
+#!/bin/bash
 ./small_tree.sh
 for D in `ls * | grep day | sed 's/day/day_/g' | sort -n -t _ -k 2 | sed 's/_//g' | sed 's/://g'`; do
   if [ -d "${D}" ]; then

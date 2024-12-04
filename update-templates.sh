@@ -1,3 +1,4 @@
+#!/bin/bash
 for dir in */; do
     dir="${dir%/}"
     echo "Copying template to $dir..."
