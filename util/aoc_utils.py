@@ -123,7 +123,7 @@ def letter_grid(lines, separator="", buf_size=10_000):
 
     lib.letter_grid(lines_c_ptrs, nlines, sep_c, out_buf, out_rows, out_cols)
     rows, cols = out_rows[0], out_cols[0]
-    return [[out_buf[r*cols + c] for c in range(cols)] for r in range(rows)]
+    return [[chr(out_buf[r*cols + c]) for c in range(cols)] for r in range(rows)]
 
 def number_grid(lines, separator="", buf_size=10_000):
     out_buf = ffi.new("int64_t[]", buf_size)
