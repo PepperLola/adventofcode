@@ -1,0 +1,23 @@
+[package]
+name = "aoc_utils"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "aoc_utils"
+crate-type = ["cdylib", "rlib"]
+
+[dev-dependencies]
+criterion = "0.8.0"
+ndarray = "0.17.1"
+
+[[bench]]
+name = "find_all"
+harness = false
+
+[[bench]]
+name = "find"
+harness = false
+
+[dependencies]
+rayon = "1.11.0"
