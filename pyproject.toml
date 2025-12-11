@@ -1,0 +1,17 @@
+[project]
+name = "advent-of-code"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib>=3.10.7",
+    "networkx>=3.4.2",
+    "scipy>=1.15.3",
+    "shapely>=2.1.2",
+    "sympy>=1.14.0",
+    "z3>=0.2.0",
+]
+
+[tool.uv.extra-build-variables]
+scipy = { LDFLAGS = "-L/opt/homebrew/opt/openblas/lib", CPPFLAGS = "-I/opt/homebrew/opt/openblas/include", PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig", CC = "/opt/homebrew/bin/gcc-15", CXX = "/opt/homebrew/bin/g++-15" }
